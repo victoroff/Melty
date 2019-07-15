@@ -9,7 +9,7 @@ public class BlockSpawner : MonoBehaviour
     public Transform player;
 
     //time multiplayer for each wave
-    public float WaveTime = 1f;
+    public float WaveTime = 7f;
     // time to spond each block
     private float spawnTime = 2f;
     // Spawn Blocks By time. Random on 3 spawn
@@ -32,7 +32,6 @@ public class BlockSpawner : MonoBehaviour
             {
                 var blockPosition = spawnPoints[i].position;
                 blockPosition.z = blockPosition.z + player.position.z;
-
                 Instantiate(blockPrefab, blockPosition, Quaternion.identity);
             }
         }
