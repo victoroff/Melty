@@ -9,9 +9,9 @@ public class BlockSpawner : MonoBehaviour
     public Transform player;
 
     //time multiplayer for each wave
-    public float WaveTime = 7f;
+    public float WaveTime = 2f;
     // time to spond each block
-    private float spawnTime = 2f;
+    private float spawnTime = 0.5f;
     // Spawn Blocks By time. Random on 3 spawn
     void Update()
     {
@@ -25,13 +25,14 @@ public class BlockSpawner : MonoBehaviour
 
     private void SpawnBlocks()
     {
-        int randIdx = Random.Range(0, spawnPoints.Length);
+        int randIdx = Random.Range(0, spawnPoints.Length+1);
         for (int i = 0; i < spawnPoints.Length; i++)
         {
+           // Debug.Log("randIDx:" + randIdx + "i:" + i);
             if (randIdx != i)
             {
                 var blockPosition = spawnPoints[i].position;
-                blockPosition.z = blockPosition.z + player.position.z;
+                blockPosition.z += player.position.z;
                 Instantiate(blockPrefab, blockPosition, Quaternion.identity);
             }
         }
