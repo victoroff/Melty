@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockSpawner : MonoBehaviour
+public class BlockManager : MonoBehaviour
 {
     public Transform[] spawnPoints;
     public GameObject blockPrefab;
     public Transform player;
-
     //time multiplayer for each wave
-    public float WaveTime = 2f;
+    public float WaveTime = 5f;
     // time to spond each block
-    private float spawnTime = 0.5f;
+    private float spawnTime = 3f;
+
     // Spawn Blocks By time. Random on 3 spawn
     void Update()
     {
-        if (Time.time >= spawnTime)
+        // when u hit a block and restart time.time is more than 0 ; reset time or put some screen, live counts?
+        if (Time.timeSinceLevelLoad >= spawnTime)
         {
             SpawnBlocks();
             spawnTime = Time.time + WaveTime;

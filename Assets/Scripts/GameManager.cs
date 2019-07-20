@@ -6,14 +6,14 @@ public class GameManager : MonoBehaviour
 {
     bool gameHasEnded = false;
     public float restartDelay = 1f;
-    public GameObject completeLevelUI;
+   // public GameObject completeLevelUI;
 
-    // complete level
-    public void CompleteLevel()
-    {
-        Debug.Log("Level Won");
-        completeLevelUI.SetActive(true);
-    }
+    // complete level - we are not completing levels because it is endless sliding
+    //public void CompleteLevel()
+    //{
+    //    Debug.Log("Level Won");
+    //    completeLevelUI.SetActive(true);
+    //}
 
     // end game function
     public void EndGame()
@@ -33,4 +33,5 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
 }
