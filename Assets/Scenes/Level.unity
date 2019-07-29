@@ -951,7 +951,7 @@ GameObject:
   - component: {fileID: 1874812725}
   - component: {fileID: 1874812726}
   m_Layer: 0
-  m_Name: IceBlockSpawner
+  m_Name: IceBlockManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -990,6 +990,7 @@ MonoBehaviour:
   blockPrefab: {fileID: 1713322951642773353, guid: 4151bbf1f765d924ebe4a0469bd1fec5,
     type: 3}
   player: {fileID: 611674249}
+  movement: {fileID: 611674245}
   WaveTime: 4
 --- !u!1 &1999824296
 GameObject:
