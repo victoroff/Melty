@@ -11,23 +11,28 @@ public class BlockManager : MonoBehaviour
     // checking if player is moving
     public PlayerMovement movement;
     //time multiplayer for each wave
-    public float WaveTime = 5f;
+    public float WaveTime = 2f;
     // time to spond each block
+    // managable distance for ice block spawning
+    public float blockSpawnDistance = 1f;
     private float spawnTime = 3f;
     private List<GameObject> activeBlocks;
 
     private void Start()
     {
         activeBlocks = new List<GameObject>();
+        // spawn the first blocks
+        SpawnBlocks(blockSpawnDistance);
     }
     // Spawn Blocks By time. Random on 3 spawn
     void FixedUpdate()
     {
+        //(playerTransform.position.z - safeZone > (spawnZ - amtTilesOnScreen * tileLength))
         // when u hit a block and restart time.time is more than 0 ; reset time or put some screen, live counts?
         if (Time.timeSinceLevelLoad >= spawnTime)
         {
-            SpawnBlocks();
-            spawnTime = Time.time + WaveTime;
+            SpawnBlocks(blockSpawnDistance);
+            spawnTime = Time.timeSinceLevelLoad + WaveTime;
             
         }
 
@@ -35,7 +40,7 @@ public class BlockManager : MonoBehaviour
         if (activeBlocks.Count > 0 && movement.enabled)
         {
            // Debug.Log(activeBlocks.Count);
-            var currentBlock = activeBlocks[0];
+            var currentBlock = activeBlocks[activeBlocks.Count];
 
             if (player.position.z > currentBlock.transform.position.z)
             {
@@ -47,7 +52,7 @@ public class BlockManager : MonoBehaviour
 
     }
 
-    private void SpawnBlocks()
+    private void SpawnBlocks(float blockSpawnDistance)
     {
         int randIdx = Random.Range(0, spawnPoints.Length+1);
         for (int i = 0; i < spawnPoints.Length; i++)
@@ -57,7 +62,7 @@ public class BlockManager : MonoBehaviour
             {
                 GameObject block;
                 var blockPosition = spawnPoints[i].position;
-                blockPosition.z += player.position.z;
+                blockPosition.z += player.position.z + blockSpawnDistance;
                 block = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
                 activeBlocks.Add(block);
             }
