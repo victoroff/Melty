@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
 public class BlockManager : MonoBehaviour
 {
     public Transform[] spawnPoints;
@@ -10,72 +8,73 @@ public class BlockManager : MonoBehaviour
 
     // checking if player is moving
     public PlayerMovement movement;
+
     //time multiplayer for each wave
     public float WaveTime = 2f;
+
     // time to spond each block
     // managable distance for ice block spawning
-    public float blockSpawnDistance = 1f;
+    public float spawnDistance = 1f;
+
     private float spawnTime = 3f;
     private List<GameObject> activeBlocks;
 
     private void Start()
     {
+        // collection to keep last blocks before spawn
         activeBlocks = new List<GameObject>();
-        // spawn the first blocks
-        SpawnBlocks(blockSpawnDistance);
+
+        SpawnBlocks(spawnDistance);
+
+        DestroyBlocks();
     }
-    // Spawn Blocks By time. Random on 3 spawn
-    void FixedUpdate()
+    
+    void Update()
     {
-        //(playerTransform.position.z - safeZone > (spawnZ - amtTilesOnScreen * tileLength))
-        // when u hit a block and restart time.time is more than 0 ; reset time or put some screen, live counts?
+        //measure from the current loaded scene not from the begining of the game
         if (Time.timeSinceLevelLoad >= spawnTime)
         {
-            SpawnBlocks(blockSpawnDistance);
+            SpawnBlocks(spawnDistance);
             spawnTime = Time.timeSinceLevelLoad + WaveTime;
-            
+            DestroyBlocks();
         }
-
-        //need to destroy the ice block after passing it
-        if (activeBlocks.Count > 0 && movement.enabled)
-        {
-           // Debug.Log(activeBlocks.Count);
-            var currentBlock = activeBlocks[activeBlocks.Count];
-
-            if (player.position.z > currentBlock.transform.position.z)
-            {
-                destroyBlocks();
-            }
-        }
-
-
 
     }
 
-    private void SpawnBlocks(float blockSpawnDistance)
+    private void SpawnBlocks(float spawnDistance)
     {
-        int randIdx = Random.Range(0, spawnPoints.Length+1);
+        int randIdx = Random.Range(0, spawnPoints.Length + 1);
         for (int i = 0; i < spawnPoints.Length; i++)
         {
-           // Debug.Log("randIDx:" + randIdx + "i:" + i);
+            // Debug.Log("randIDx:" + randIdx + "i:" + i);
             if (randIdx != i)
             {
                 GameObject block;
                 var blockPosition = spawnPoints[i].position;
-                blockPosition.z += player.position.z + blockSpawnDistance;
+                blockPosition.z += player.position.z + spawnDistance;
                 block = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
+
                 activeBlocks.Add(block);
+
+                //passedBlocks++;
             }
         }
     }
-    private void destroyBlocks()
+    private void DestroyBlocks()
     {
-        // remove tiles behind the player
+        // in order to keep the bugs out
+        if (activeBlocks.Count == 0)
+        {
+            return;
+        }
+
         for (int i = 0; i < activeBlocks.Count; i++)
         {
-            Destroy(activeBlocks[i]);
+            // second parameter is for delaying the destroy so the player could pass by
+            Destroy(activeBlocks[i],2f);
             activeBlocks.RemoveAt(i);
         }
-        
+        //passedBlocks = 0;
+
     }
 }

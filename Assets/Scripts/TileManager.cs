@@ -17,7 +17,8 @@ public class TileManager : MonoBehaviour
     {
         activeTiles = new List<GameObject>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        spawnTile();
+        //SpawnTile();
+       // DestroyTile();
     }
 
     // Update is called once per frame
@@ -25,12 +26,12 @@ public class TileManager : MonoBehaviour
     {
         if (playerTransform.position.z - safeZone > (spawnZ - amtTilesOnScreen * tileLength))
         {
-            spawnTile();
-            deleteTile();
+            SpawnTile();
+            DestroyTile();
         }
     }
 
-    void spawnTile(int prefabIndex = -1) {
+    void SpawnTile() {
         GameObject go;
         go = Instantiate(tilePrefabs[0] as GameObject);
         go.transform.SetParent(transform);
@@ -38,10 +39,10 @@ public class TileManager : MonoBehaviour
         spawnZ += tileLength;
         activeTiles.Add(go);
     }
-    private void deleteTile()
+    private void DestroyTile()
     {
         // remove tiles behind the player
-        Destroy(activeTiles[0]);
+        Destroy(activeTiles[0], 2f);
         activeTiles.RemoveAt(0);
     }
 }
